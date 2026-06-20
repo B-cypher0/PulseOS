@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import LiveDashboard from './pages/LiveDashboard'
 import StaffCommand from './pages/StaffCommand'
+import PatientBoard from './pages/PatientBoard'
 import './App.css'
 
 const NAV = [
   { id: 'live', label: '⬤ Live Overview' },
   { id: 'staff', label: '👥 Staff Command' },
+  { id: 'patients', label: '🫀 Patient Board' },
 ]
 
 export default function App() {
@@ -13,7 +15,6 @@ export default function App() {
 
   return (
     <div style={{ margin: 0, padding: 0, background: '#0a0e1a', minHeight: '100vh' }}>
-      {/* Navigation */}
       <div style={{ display: 'flex', gap: 4, padding: '8px 16px', background: '#0d1117', borderBottom: '1px solid #1f2937', position: 'sticky', top: 0, zIndex: 50 }}>
         {NAV.map(n => (
           <button
@@ -30,9 +31,9 @@ export default function App() {
           </button>
         ))}
       </div>
-
       {page === 'live' && <LiveDashboard />}
       {page === 'staff' && <StaffCommand />}
+      {page === 'patients' && <PatientBoard />}
     </div>
   )
 }
