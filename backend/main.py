@@ -9,7 +9,7 @@ settings = get_settings()
 
 app = FastAPI(
     title="PulseOS",
-    description="AI-powered hospital operations platform by Vibranium. Author: Bongani Malinga | ORCID: 0009-0000-7981-8929",
+    description="AI-powered hospital operations platform by Vibranium. Author: Bongani Ntshumayelo | ORCID: 0009-0000-7981-8929",
     version="1.0.0"
 )
 
@@ -23,7 +23,7 @@ app.include_router(admin.router)
 
 @app.get("/", tags=["Health"])
 async def root():
-    return {"system": "PulseOS", "version": "1.0.0", "status": "online", "author": "Bongani Malinga", "orcid": "0009-0000-7981-8929", "docs": "/docs"}
+    return {"system": "PulseOS", "version": "1.0.0", "status": "online", "author": "Bongani Ntshumayelo", "orcid": "0009-0000-7981-8929", "docs": "/docs"}
 
 @app.get("/health", tags=["Health"])
 async def health_check():
