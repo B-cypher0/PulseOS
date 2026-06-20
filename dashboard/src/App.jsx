@@ -2,12 +2,14 @@ import { useState } from 'react'
 import LiveDashboard from './pages/LiveDashboard'
 import StaffCommand from './pages/StaffCommand'
 import PatientBoard from './pages/PatientBoard'
+import AmbulanceTracker from './pages/AmbulanceTracker'
 import './App.css'
 
 const NAV = [
   { id: 'live', label: '⬤ Live Overview' },
   { id: 'staff', label: '👥 Staff Command' },
   { id: 'patients', label: '🫀 Patient Board' },
+  { id: 'ambulance', label: '🚑 Ambulance' },
 ]
 
 export default function App() {
@@ -34,6 +36,7 @@ export default function App() {
       {page === 'live' && <LiveDashboard />}
       {page === 'staff' && <StaffCommand />}
       {page === 'patients' && <PatientBoard />}
+      {page === 'ambulance' && <AmbulanceTracker />}
     </div>
   )
 }
