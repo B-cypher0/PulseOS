@@ -3,6 +3,7 @@ import LiveDashboard from './pages/LiveDashboard'
 import StaffCommand from './pages/StaffCommand'
 import PatientBoard from './pages/PatientBoard'
 import AmbulanceTracker from './pages/AmbulanceTracker'
+import AIReports from './pages/AIReports'
 import './App.css'
 
 const NAV = [
@@ -10,6 +11,7 @@ const NAV = [
   { id: 'staff', label: '👥 Staff Command' },
   { id: 'patients', label: '🫀 Patient Board' },
   { id: 'ambulance', label: '🚑 Ambulance' },
+  { id: 'reports', label: '🤖 AI Reports' },
 ]
 
 export default function App() {
@@ -37,6 +39,7 @@ export default function App() {
       {page === 'staff' && <StaffCommand />}
       {page === 'patients' && <PatientBoard />}
       {page === 'ambulance' && <AmbulanceTracker />}
+      {page === 'reports' && <AIReports />}
     </div>
   )
 }
