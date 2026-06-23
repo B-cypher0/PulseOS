@@ -22,6 +22,147 @@ const css = `
   ::-webkit-scrollbar-thumb { background: #374151; border-radius: 2px; }
 `
 
+const DOCS = {
+  rx: {
+    title: 'PRESCRIPTION', icon: '💊', color: '#a78bfa', ref: 'RX-2026-0847',
+    fields: [['Patient','Thabo Molefe'],['ID','8803125678'],['Medical aid','Discovery · 4821'],['Date','22 June 2026']],
+    lines: [['Aspirin 100mg','1 daily · 30 days'],['Atorvastatin 40mg','1 at night · 30 days'],['Metoprolol 50mg','BD · 30 days']],
+    note: 'ST elevation noted. Cardiology referral in 7 days. Avoid strenuous activity.',
+    sig: 'Dr. N. Khumalo ✓'
+  },
+  sick: {
+    title: 'SICK NOTE', icon: '🏥', color: '#fcd34d', ref: 'SN-2026-0312',
+    fields: [['Patient','Thabo Molefe'],['Examined','22 June 2026'],['Unfit from','22 June 2026'],['Unfit until','24 June 2026']],
+    lines: [['ICD-10','I20.9 — Angina pectoris'],['Days off','3 days']],
+    note: 'Patient medically unfit for work for the period stated above.',
+    sig: 'Dr. N. Khumalo ✓'
+  },
+  referral: {
+    title: 'REFERRAL LETTER', icon: '📋', color: '#93c5fd', ref: 'REF-2026-0156',
+    fields: [['Referring','Dr. N. Khumalo'],['Refer to','Cardiologist'],['Patient','Thabo Molefe · 38yrs'],['Urgency','Within 7 days']],
+    lines: [['Aspirin 100mg','daily'],['Metoprolol 50mg','BD']],
+    note: 'ST elevation on ECG. Elevated troponin. Requires specialist cardiac evaluation and possible angiogram.',
+    sig: 'Dr. N. Khumalo ✓'
+  },
+  discharge: {
+    title: 'DISCHARGE SUMMARY', icon: '✅', color: '#6ee7b7', ref: 'DC-2026-0089',
+    fields: [['Admitted','22 Jun · 11:30'],['Discharged','22 Jun · 16:00'],['Ward','Emergency → General A'],['Stay','4h 30min']],
+    lines: [['Aspirin 100mg','1 daily'],['Atorvastatin 40mg','1 at night']],
+    note: 'Angina pectoris (I20.9). Patient stabilised. Follow-up in 7 days. Return if chest pain recurs.',
+    sig: 'Dr. N. Khumalo ✓'
+  },
+  lab: {
+    title: 'LAB REQUEST', icon: '🧪', color: '#6ee7b7', ref: 'LAB-2026-0445',
+    fields: [['Patient','Thabo Molefe'],['Doctor','Dr. N. Khumalo'],['Priority','Urgent'],['Date','22 June 2026']],
+    lines: [['Troponin I','Cardiac marker · Urgent'],['Full blood count','Routine'],['12-lead ECG','Immediate'],['Chest X-ray','PA view']],
+    note: 'Suspected MI. ST elevation on bedside ECG. Urgent troponin required.',
+    sig: 'Dr. N. Khumalo ✓'
+  },
+  billing: {
+    title: 'BILLING INVOICE', icon: '🧾', color: '#fcd34d', ref: 'INV-2026-1089',
+    fields: [['Patient','Thabo Molefe'],['Medical aid','Discovery · 4821'],['Date','22 June 2026'],['Account','ACC-8803-2026']],
+    lines: [['Emergency consultation','R850.00'],['ECG (12-lead)','R320.00'],['Troponin test','R480.00'],['Medications','R215.00']],
+    note: 'Total: R1,865.00 — Medical aid claim submitted automatically.',
+    sig: 'Receptionist L. Pillay ✓'
+  },
+  consent: {
+    title: 'CONSENT FORM', icon: '✍️', color: '#fca5a5', ref: 'CF-2026-0034',
+    fields: [['Patient','Thabo Molefe'],['Procedure','Coronary angiogram'],['Surgeon','Dr. B. Ndlovu'],['Date','23 June 2026']],
+    lines: [['Risk informed','Yes'],['Alternatives explained','Yes']],
+    note: 'Patient consents to procedure and understands risks including bleeding, infection, and rare cardiac events.',
+    sig: '⚠ Awaiting patient signature'
+  },
+  transfer: {
+    title: 'TRANSFER FORM', icon: '🚑', color: '#fca5a5', ref: 'TRF-2026-0021',
+    fields: [['From','Durban General'],['To','Inkosi Albert Luthuli'],['Reason','Specialist cardiac care'],['Mode','Emergency ambulance']],
+    lines: [['Discharge summary','Printed + digital'],['Lab results','Digital'],['Medications','Printed']],
+    note: 'Patient stable. HR 88, BP 145/90, SpO2 96%. IV access established. O2 at 2L/min.',
+    sig: 'Dr. N. Khumalo ✓'
+  },
+}
+
+function DocumentHub() {
+  const [active, setActive] = useState('rx')
+  const [status, setStatus] = useState('✓ Document ready · Doctor signature confirmed')
+  const doc = DOCS[active]
+
+  const handlePrint = () => {
+    setStatus('🖨️ Sending to printer...')
+    setTimeout(() => setStatus('✓ Printed successfully · Copy saved to patient file'), 1500)
+  }
+  const handleWhatsApp = () => {
+    setStatus('📱 Sent to patient WhatsApp +27 82 000 0000 · Delivered ✓')
+    setTimeout(() => setStatus('✓ Document ready · Doctor signature confirmed'), 2500)
+  }
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '150px 1fr', gap: 10, height: 280 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, overflowY: 'auto' }}>
+        {Object.entries(DOCS).map(([k, d]) => (
+          <button
+            key={k}
+            onClick={() => { setActive(k); setStatus('✓ Document ready · Doctor signature confirmed') }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6, padding: '6px 8px',
+              borderRadius: 8, border: `1px solid ${active === k ? COLORS.purple : COLORS.border}`,
+              background: active === k ? 'rgba(124,58,237,.15)' : '#ffffff05',
+              cursor: 'pointer', textAlign: 'left', width: '100%'
+            }}
+          >
+            <span style={{ fontSize: 13, flexShrink: 0 }}>{d.icon}</span>
+            <span style={{ fontSize: 10, fontWeight: 500, color: active === k ? COLORS.purpleLight : COLORS.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {d.title}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <div style={{ background: '#0d1117', border: `1px solid ${COLORS.border}`, borderRadius: 10, padding: 10, display: 'flex', flexDirection: 'column', gap: 6, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${COLORS.border}`, paddingBottom: 6 }}>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: COLORS.text }}>Durban General Hospital</div>
+            <div style={{ fontSize: 9, color: COLORS.textMuted }}>Ref: {doc.ref} · 22 June 2026</div>
+          </div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: doc.color }}>{doc.icon} {doc.title}</div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+          {doc.fields.map(([l, v], i) => (
+            <div key={i} style={{ background: '#ffffff06', borderRadius: 5, padding: '4px 6px' }}>
+              <div style={{ fontSize: 9, color: COLORS.textMuted }}>{l}</div>
+              <div style={{ fontSize: 10, fontWeight: 500, color: COLORS.text }}>{v}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {doc.lines.map(([name, detail], i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 0', borderBottom: `1px solid ${COLORS.border}` }}>
+              <div style={{ width: 14, height: 14, borderRadius: '50%', background: 'rgba(124,58,237,.2)', color: COLORS.purpleLight, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
+              <div style={{ flex: 1, fontSize: 10, color: COLORS.text }}>{name}</div>
+              <div style={{ fontSize: 10, color: COLORS.textMuted }}>{detail}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ fontSize: 9, color: COLORS.textMuted, background: '#ffffff04', borderRadius: 5, padding: '4px 6px', lineHeight: 1.4 }}>
+          {doc.note}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 'auto' }}>
+          <div style={{ flex: 1, fontSize: 9, color: doc.sig.includes('⚠') ? COLORS.amber : COLORS.green }}>{doc.sig}</div>
+          <button onClick={handleWhatsApp} style={{ fontSize: 9, padding: '4px 8px', borderRadius: 6, border: 'none', background: 'rgba(16,185,117,.15)', color: '#6ee7b7', cursor: 'pointer' }}>📱 WhatsApp</button>
+          <button onClick={handlePrint} style={{ fontSize: 9, padding: '4px 8px', borderRadius: 6, border: 'none', background: COLORS.purple, color: '#fff', cursor: 'pointer' }}>🖨️ Print</button>
+        </div>
+
+        <div style={{ fontSize: 9, color: status.includes('⚠') ? COLORS.amber : COLORS.green, background: '#ffffff04', borderRadius: 5, padding: '3px 6px' }}>
+          {status}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function StatCard({ value, label, delta, deltaColor }) {
   return (
     <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: '14px 16px', flex: 1, minWidth: 0 }}>
@@ -100,29 +241,6 @@ function AmbRow({ unit, status, info, hr, eta, progress, color }) {
   )
 }
 
-function FloorMap({ dots }) {
-  const wards = [
-    { label: 'Emergency', x: 8, y: 8, w: 120, h: 80, color: COLORS.purple },
-    { label: 'ICU', x: 136, y: 8, w: 100, h: 80, color: COLORS.green },
-    { label: 'General A', x: 244, y: 8, w: 110, h: 80, color: COLORS.amber },
-    { label: 'Trauma', x: 8, y: 96, w: 120, h: 76, color: COLORS.red },
-    { label: 'Maternity', x: 136, y: 96, w: 100, h: 76, color: COLORS.purple },
-    { label: 'General B', x: 244, y: 96, w: 110, h: 76, color: COLORS.blue },
-  ]
-  return (
-    <div style={{ position: 'relative', height: 180, background: '#ffffff03', border: `1px solid ${COLORS.border}`, borderRadius: 10, overflow: 'hidden' }}>
-      {wards.map((w, i) => (
-        <div key={i} style={{ position: 'absolute', left: w.x, top: w.y, width: w.w, height: w.h, border: `1px solid ${w.color}44`, borderRadius: 6, background: `${w.color}08` }}>
-          <span style={{ fontSize: 9, color: `${w.color}99`, padding: '4px 6px', display: 'block' }}>{w.label}</span>
-        </div>
-      ))}
-      {dots.map((d, i) => (
-        <div key={i} style={{ position: 'absolute', left: d.x, top: d.y, width: 10, height: 10, borderRadius: '50%', background: d.color, boxShadow: `0 0 5px ${d.color}88`, transition: 'left 2s ease, top 2s ease' }} />
-      ))}
-    </div>
-  )
-}
-
 const SLabel = ({ children }) => (
   <div style={{ fontSize: 10, fontWeight: 600, color: COLORS.textMuted, textTransform: 'uppercase', letterSpacing: '.6px', marginBottom: 8 }}>{children}</div>
 )
@@ -130,7 +248,6 @@ const SLabel = ({ children }) => (
 export default function LiveDashboard() {
   const [time, setTime] = useState(new Date())
   const [mode, setMode] = useState('demo')
-  const [dots, setDots] = useState([])
   const [alerts, setAlerts] = useState([
     { id: 1, color: COLORS.red, title: 'SpO2 critical — Bed 7', sub: '89% · Nurse Dlamini notified', time: 'now', pulse: true },
     { id: 2, color: COLORS.amber, title: 'Task overdue — Meds Bay 3', sub: '14 min overdue · Escalated', time: '2m', pulse: false },
@@ -160,19 +277,6 @@ export default function LiveDashboard() {
     { color: COLORS.green, title: 'Theatre 2 ready', sub: 'Surgeon en route', pulse: false },
   ]
 
-  const wardBounds = [
-    { x: [18, 118], y: [18, 78] }, { x: [146, 226], y: [18, 78] }, { x: [254, 344], y: [18, 78] },
-    { x: [18, 118], y: [106, 162] }, { x: [146, 226], y: [106, 162] }, { x: [254, 344], y: [106, 162] },
-  ]
-  const dotColors = [COLORS.purple, COLORS.green, COLORS.red, COLORS.amber, COLORS.blue, COLORS.purpleLight, COLORS.greenLight]
-
-  useEffect(() => {
-    setDots(Array.from({ length: 12 }, (_, i) => {
-      const w = wardBounds[i % 6]
-      return { x: w.x[0] + Math.random() * (w.x[1] - w.x[0]), y: w.y[0] + Math.random() * (w.y[1] - w.y[0]), color: dotColors[i % dotColors.length], ward: i % 6 }
-    }))
-  }, [])
-
   useEffect(() => {
     const t = setInterval(() => setTime(new Date()), 1000)
     return () => clearInterval(t)
@@ -185,19 +289,6 @@ export default function LiveDashboard() {
       setAmb1Progress(p => Math.min(100, p + Math.random() * 2))
       setAmb1ETA(p => Math.max(0, p - .1))
     }, 1800)
-    return () => clearInterval(t)
-  }, [])
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      setDots(prev => prev.map(d => {
-        if (Math.random() < .3) {
-          const w = wardBounds[d.ward]
-          return { ...d, x: w.x[0] + Math.random() * (w.x[1] - w.x[0]), y: w.y[0] + Math.random() * (w.y[1] - w.y[0]) }
-        }
-        return d
-      }))
-    }, 3000)
     return () => clearInterval(t)
   }, [])
 
@@ -218,7 +309,6 @@ export default function LiveDashboard() {
       <style>{css}</style>
       <div style={{ background: COLORS.bg, minHeight: '100vh', color: COLORS.text }}>
 
-        {/* Top bar */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 20px', borderBottom: `1px solid ${COLORS.border}`, background: '#0d1117' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div className="pulse" style={{ width: 8, height: 8, borderRadius: '50%', background: COLORS.green }} />
@@ -241,10 +331,8 @@ export default function LiveDashboard() {
           </div>
         </div>
 
-        {/* Main grid */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', height: 'calc(100vh - 49px)' }}>
 
-          {/* Left */}
           <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 14, overflowY: 'auto' }}>
             <div style={{ display: 'flex', gap: 10 }}>
               <StatCard value="18" label="Staff clocked in" delta="↑ 3 since 06:00" deltaColor={COLORS.green} />
@@ -252,10 +340,12 @@ export default function LiveDashboard() {
               <StatCard value="12" label="Open tasks" delta="⚠ 3 overdue" deltaColor={COLORS.amber} />
               <StatCard value="9" label="Beds available" delta="◆ 2 cleaning" deltaColor={COLORS.purpleLight} />
             </div>
+
             <div>
-              <SLabel>Live floor map</SLabel>
-              <FloorMap dots={dots} />
+              <SLabel>Document & Print Hub</SLabel>
+              <DocumentHub />
             </div>
+
             <div>
               <SLabel>Ambulances</SLabel>
               <div style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 10, padding: '10px 12px' }}>
@@ -266,7 +356,6 @@ export default function LiveDashboard() {
             </div>
           </div>
 
-          {/* Right sidebar */}
           <div style={{ borderLeft: `1px solid ${COLORS.border}`, padding: 14, display: 'flex', flexDirection: 'column', gap: 14, overflowY: 'auto' }}>
             <div>
               <SLabel>Live alerts</SLabel>
